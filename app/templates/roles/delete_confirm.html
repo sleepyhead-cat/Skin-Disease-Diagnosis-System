@@ -1,0 +1,29 @@
+{% extends "layouts/base.html" %}
+{% block title %}Delete Role{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0">Confirm Delete Role</h5>
+            </div>
+            <div class="card-body">
+                <p>Are you sure you want to delete role <strong>{{ role.name }}</strong>?</p>
+                
+                {% if role.users %}
+                    <div class="alert alert-warning small">
+                        <strong>Warning:</strong> This role is currently assigned to {{ role.users|length }} user(s). Removing it will revoke their associated permissions.
+                    </div>
+                {% endif %}
+
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <a href="{{ url_for('roles.detail', role_id=role.id) }}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

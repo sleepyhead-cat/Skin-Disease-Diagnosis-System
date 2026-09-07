@@ -1,0 +1,49 @@
+<div class="mb-3">
+    <label class="form-label fw-bold">Role Name</label>
+    {{ form.name(class="form-control rounded-pill px-3", placeholder="e.g., Doctor, Dermatologist, Manager") }}
+</div>
+
+<div class="mb-4">
+    <label class="form-label fw-bold">Description</label>
+    {{ form.description(class="form-control rounded-4 p-3", rows="3", placeholder="Brief explanation of what this role does...") }}
+</div>
+
+<!-- Grouped Permissions Matrix -->
+<div class="mb-4">
+    <label class="form-label fw-bold d-block">Assign Permissions</label>
+    <small class="text-muted d-block mb-3">Select what members with this role are allowed to access and modify.</small>
+
+    <div class="card border-0 shadow-sm p-3 bg-light rounded-4">
+        {% if grouped_permissions %}
+            {% for module, perms in grouped_permissions.items() %}
+            <div class="mb-3 p-3 bg-white rounded-3 shadow-xs">
+                <div class="d-flex justify-content-between align-items-center mb-2 border-bottom pb-2">
+                    <h6 class="fw-bold text-primary mb-0">{{ module|capitalize }} Module</h6>
+                    <button type="button" class="btn btn-sm btn-link text-decoration-none select-all-btn" data-module="{{ module }}">Select All</button>
+                </div>
+                <div class="row g-2">
+                    {% for perm in perms %}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="form-check custom-checkbox-pill">
+                            <input class="form-check-input" type="checkbox" name="permission_ids" value="{{ perm.id }}" id="perm_{{ perm.id }}"
+                                   {% if role and perm in role.permissions %}checked{% endif %}>
+                            <label class="form-check-label small" for="perm_{{ perm.id }}">
+                                <strong>{{ perm.name }}</strong> <br>
+                                <span class="text-muted fs-7">({{ perm.code }})</span>
+                            </label>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-muted mb-0 small">No permissions created yet. Go to <a href="{{ url_for('permissions.index') }}">Permissions Management</a> to seed them.</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="d-flex gap-2">
+    <button type="submit" class="btn bg-custom-blue text-white rounded-pill px-5 fw-bold">Save Role</button>
+    <a href="{{ url_for('roles.index') }}" class="btn btn-secondary rounded-pill px-4">Cancel</a>
+</div>

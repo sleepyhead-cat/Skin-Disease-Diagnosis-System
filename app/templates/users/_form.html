@@ -1,0 +1,149 @@
+<form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+
+    <!-- Global Form Validation Errors -->
+    {% if form.errors %}
+        <div class="alert alert-danger mb-4 rounded-3">
+            <h6 class="fw-bold mb-1">Please fix the following errors:</h6>
+            <ul class="mb-0 ps-3 small">
+                {% for field_name, errors in form.errors.items() %}
+                    {% for error in errors %}
+                        <li><strong>{{ form[field_name].label.text if field_name in form else field_name }}:</strong> {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <!-- Profile Picture -->
+    <div class="mb-3">
+        {{ form.picture.label(class="form-label fw-bold") }}
+        {% if user is defined and user.picture %}
+            <div class="mb-2">
+                <img src="{{ url_for('static', filename='uploads/' ~ user.picture) }}"
+                    alt="Current Profile Picture"
+                    class="rounded-circle shadow-sm"
+                    style="width:80px; height:80px; object-fit:cover;">
+            </div>
+        {% else %}
+            <div class="mb-2">
+                <img src="{{ url_for('static', filename='images/8358770.png') }}"
+                    alt="Default Profile Picture"
+                    class="rounded-circle shadow-sm"
+                    style="width:80px; height:80px; object-fit:cover;">
+            </div>
+        {% endif %}
+
+        {{ form.picture(class="form-control") }}
+        {% if form.picture.errors %}
+            <div class="text-danger small mt-1">
+                {% for error in form.picture.errors %}
+                    <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Username -->
+    <div class="mb-3">
+        {{ form.username.label(class="form-label fw-bold") }}
+        {{ form.username(class="form-control") }}
+        {% if form.username.errors %}
+            <div class="text-danger small mt-1">
+                {% for error in form.username.errors %}
+                    <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Email -->
+    <div class="mb-3">
+        {{ form.email.label(class="form-label fw-bold") }}
+        {{ form.email(class="form-control") }}
+        {% if form.email.errors %}
+            <div class="text-danger small mt-1">
+                {% for error in form.email.errors %}
+                    <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Full Name -->
+    <div class="mb-3">
+        {{ form.full_name.label(class="form-label fw-bold") }}
+        {{ form.full_name(class="form-control") }}
+        {% if form.full_name.errors %}
+            <div class="text-danger small mt-1">
+                {% for error in form.full_name.errors %}
+                    <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Phone Number -->
+    <div class="mb-3">
+        {{ form.phone_number.label(class="form-label fw-bold") }}
+        {{ form.phone_number(class="form-control") }}
+        {% if form.phone_number.errors %}
+            <div class="text-danger small mt-1">
+                {% for error in form.phone_number.errors %}
+                    <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Active Status Switch -->
+    <div class="form-check form-switch mb-3">
+        {{ form.is_active(class="form-check-input") }}
+        {{ form.is_active.label(class="form-check-label fw-bold") }}
+    </div>
+
+    <!-- Role Selection -->
+    <div class="mb-3">
+        {{ form.role_id.label(class="form-label fw-bold") }}
+        {{ form.role_id(class="form-select") }}
+        {% if form.role_id.errors %}
+            <div class="text-danger small mt-1">
+                {% for error in form.role_id.errors %}
+                    <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- New Password -->
+    <div class="mb-3">
+        {{ form.password.label(class="form-label fw-bold") }}
+        {{ form.password(class="form-control") }}
+        {% if form.password.errors %}
+            <div class="text-danger small mt-1">
+                {% for error in form.password.errors %}
+                    <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Confirm Password -->
+    <div class="mb-3">
+        {{ form.confirm_password.label(class="form-label fw-bold") }}
+        {{ form.confirm_password(class="form-control") }}
+        {% if form.confirm_password.errors %}
+            <div class="text-danger small mt-1">
+                {% for error in form.confirm_password.errors %}
+                    <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="mt-4 d-flex gap-2">
+        {{ form.submit(class="btn btn-info text-white rounded-pill px-4 fw-bold") }}
+        <a href="{{ url_for('users.index') }}" class="btn btn-outline-secondary rounded-pill px-4">Cancel</a>
+    </div>
+</form>

@@ -1,0 +1,17 @@
+{% extends "layouts/base.html" %}
+{% block title %}Edit Disease{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1 class="h3 mb-0">Edit Disease: {{ rule.name }}</h1>
+            <a href="{{ url_for('rules.index') }}" class="btn btn-info text-white btn-sm">Back to Diseases</a>
+        </div>
+        <form method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            {% include "rules/_form.html" %}
+        </form>
+    </div>
+</div>
+{% endblock %}

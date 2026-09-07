@@ -1,0 +1,55 @@
+{
+  "symptoms": [
+    {
+      "symptom": "Redness (Erythema)",
+      "description": "Skin appears red or flushed."
+    },
+    {
+      "symptom": "Itching (Pruritus)",
+      "description": "Irritating sensation causing a desire to scratch."
+    },
+    {
+      "symptom": "Scaling or Flaking",
+      "description": "Peeling, flaking, or shed skin cells."
+    },
+    {
+      "symptom": "Blisters (Vesicles)",
+      "description": "Fluid-filled bumps on the skin surface."
+    },
+    {
+      "symptom": "Dry Skin (Xerosis)",
+      "description": "Skin feels rough, tight, or cracked."
+    },
+    {
+      "symptom": "Pustules",
+      "description": "Small pus-filled bumps on skin or near hair follicles."
+    }
+  ],
+  "diseases": [
+    {
+      "disease": "Atopic Dermatitis (Eczema)",
+      "name": "Eczema",
+      "urgency": false,
+      "advice": "Keep skin moisturized daily. Avoid harsh soaps.",
+      "description": "A chronic condition causing dry, red, itchy skin patches.",
+      "weights": {
+        "Itching (Pruritus)": 0.85,
+        "Redness (Erythema)": 0.75,
+        "Dry Skin (Xerosis)": 0.80,
+        "Scaling or Flaking": 0.60
+      }
+    },
+    {
+      "disease": "Contact Dermatitis",
+      "name": "Allergic Contact Rash",
+      "urgency": false,
+      "advice": "Identify and eliminate contact with foreign allergic substances.",
+      "description": "Skin reaction resulting from exposure to allergens.",
+      "weights": {
+        "Redness (Erythema)": 0.80,
+        "Blisters (Vesicles)": 0.75,
+        "Itching (Pruritus)": 0.85
+      }
+    }
+  ]
+}

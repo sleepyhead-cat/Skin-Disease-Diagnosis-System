@@ -1,0 +1,66 @@
+{% extends "layouts/base.html" %}
+{% block title %}Roles Management{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h3 fw-bold mb-1">Roles Management</h1>
+        <p class="text-muted small mb-0">Define roles and assign specific permission sets to control access.</p>
+    </div>
+    <a href="{{ url_for('roles.create') }}" class="btn btn-info text-white rounded-pill px-4 fw-bold">
+        + Create Role
+    </a>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th class="ps-4">Role Name</th>
+                    <th>Description</th>
+                    <th>Permissions</th>
+                    <th class="text-end pe-4">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for role in roles %}
+                <tr>
+                    <td class="ps-4 fw-bold text-primary">{{ role.name }}</td>
+                    <td class="text-muted small">{{ role.description or 'No description provided' }}</td>
+                    <td>
+                        {% if role.permissions %}
+                            {% for perm in role.permissions[:3] %}
+                                <span class="badge bg-info text-dark rounded-pill me-1 mb-1">{{ perm.name }}</span>
+                            {% endfor %}
+                            {% if role.permissions|length > 3 %}
+                                <span class="badge bg-secondary rounded-pill" title="{% for p in role.permissions[3:] %}{{ p.name }}, {% endfor %}">
+                                    +{{ role.permissions|length - 3 }} more
+                                </span>
+                            {% endif %}
+                        {% else %}
+                            <span class="badge bg-light text-muted border">No permissions</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-end pe-4">
+                        <a href="{{ url_for('roles.edit', role_id=role.id) }}" class="btn btn-sm btn-outline-warning rounded-circle me-1" title="Edit">
+                            ✏️
+                        </a>
+                        {% if role.name not in ['Admin', 'User'] %}
+                        <form action="{{ url_for('roles.delete', role_id=role.id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this role?')">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle" title="Delete">🗑️</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="text-center text-muted py-4">No roles found. Click "Create Role" to add one.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

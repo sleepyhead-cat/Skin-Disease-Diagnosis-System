@@ -1,0 +1,87 @@
+{% extends "layouts/base.html" %}
+{% block title %}Disease Detail{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center">
+    <div class="card border-0 shadow-lg rounded-4 overflow-hidden" style="max-width: 900px; width: 100%; background-color: #cecece;">
+        
+        <div class="bg-custom-blue py-3 text-center header-glow mb-4">
+            <h4 class="text-white fw-bold mb-0 card-header-title">Disease: {{ rule.name }}</h4>
+            <div class="small text-white text-opacity-75">
+                Created: {{ rule.created_at }} | Updated: {{ rule.updated_at }}
+            </div>
+        </div>
+
+        <div class="card-body px-5 pb-5">
+            <div class="row">
+                <div class="col-md-5 mb-4">
+                    <label class="form-label-sm">Disease</label>
+                    <div class="form-control rounded-pill form-control-custom mb-3 py-2">
+                        {{ rule.disease }}
+                    </div>
+
+                    <div class="photo-placeholder shadow-sm mb-3">
+                        {% if rule.picture %}
+                            <img src="{{ url_for('static', filename='diseasePic/' ~ rule.picture) }}"
+                                 alt="Disease Picture" class="preview-img">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='images/disease.jpg') }}"
+                                 alt="Disease Picture" class="preview-img">
+                        {% endif %}
+                    </div>
+
+                    <label class="form-label-sm">Name</label>
+                    <div class="form-control rounded-pill form-control-custom mb-3 py-2">
+                        {{ rule.name }}
+                    </div>
+
+                    <label class="form-label-sm">Urgency</label>
+                    <div class="form-control rounded-pill form-control-custom mb-3 py-2">
+                        {{ "Urgent" if rule.urgency else "Not Urgent" }}
+                    </div>
+
+                    <label class="form-label-sm">Advice</label>
+                    <div class="form-control rounded-pill form-control-custom mb-3 py-2">
+                        {{ rule.advice }}
+                    </div>
+
+                    <label class="form-label-sm">Description</label>
+                    <div class="form-control rounded-4 form-control-custom py-2" style="min-height: 100px;">
+                        {{ rule.description or "No description provided." }}
+                    </div>
+                </div>
+
+                <div class="col-md-7 mb-4">
+                    <label class="form-label-sm">Symptoms ({{ rule.facts|length }})</label>
+                    <div class="form-control rounded-4 form-control-custom p-0 overflow-hidden" style="min-height: 200px;">
+                        {% if rule.facts %}
+                            <div class="list-group list-group-flush bg-transparent">
+                                {% for fact in rule.facts %}
+                                <div class="list-group-item bg-transparent border-dark border-opacity-10 py-3">
+                                    <div class="fw-bold text-dark">{{ fact.symptom }}</div>
+                                    <div class="text-muted small">{{ fact.description }}</div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="p-4 text-center text-muted italic">No symptoms available.</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end align-items-center gap-2 mt-4 pt-4 border-top border-dark border-opacity-10">
+                <a href="{{ url_for('rules.index') }}" class="btn btn-transparent-gray rounded-pill px-4 fw-semibold text-dark">
+                    Back to Diseases
+                </a>
+                <a href="{{ url_for('rules.delete_confirm', rule_id=rule.id) }}" class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm">
+                    Delete
+                </a>
+                <a href="{{ url_for('rules.edit', rule_id=rule.id) }}" class="btn bg-custom-blue text-white rounded-pill px-5 fw-bold btn-glow">
+                    Edit Disease
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

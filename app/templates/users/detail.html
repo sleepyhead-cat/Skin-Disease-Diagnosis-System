@@ -1,0 +1,90 @@
+{% extends "layouts/base.html" %}
+{% block title %}User Detail{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center">
+    <div class="card border-0 shadow-lg rounded-4 overflow-hidden" style="max-width: 800px; width: 100%; background-color: #cecece;">
+        
+        <div class="bg-custom-blue py-3 text-center header-glow">
+            <h2 class="text-white fw-bold mb-0">User: "{{ user.username }}"</h2>
+        </div>
+
+        <div class="card-body p-5">
+            <div class="row align-items-center">
+                <div class="col-md-4 text-center mb-4 mb-md-0">
+                    <div class="photo-placeholder shadow-sm mb-3">
+                        {% if user.picture %}
+                            <img src="{{ url_for('static', filename='uploads/' ~ user.picture) }}"
+                                 alt="Profile Picture" class="preview-img rounded-circle" style="width:120px; height:120px; object-fit:cover;">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='images/8358770.png') }}"
+                                 alt="Profile Picture" class="preview-img rounded-circle" style="width:120px; height:120px; object-fit:cover;">
+                        {% endif %}
+                    </div>
+                    <h5 class="fw-bold text-dark">{{ user.username }}</h5>
+                    {% if user.is_active %}
+                        <span class="badge rounded-pill bg-success px-3">Active</span>
+                    {% else %}
+                        <span class="badge rounded-pill bg-secondary px-3">Inactive</span>
+                    {% endif %}
+                </div>
+
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        <label class="fw-bold text-dark ms-3 mb-1">Username</label>
+                        <div class="form-control rounded-pill form-control-custom py-2 shadow-inner">
+                            {{ user.username }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="fw-bold text-dark ms-3 mb-1">Full Name</label>
+                        <div class="form-control rounded-pill form-control-custom py-2 shadow-inner">
+                            {{ user.full_name }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="fw-bold text-dark ms-3 mb-1">Role</label>
+                        <div class="form-control rounded-pill form-control-custom py-2 shadow-inner">
+                            {% if user.roles %}
+                                {% for role in user.roles %}
+                                    {{ role.name }}{% if not loop.last %}, {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <span class="text-muted">No Role</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="fw-bold text-dark ms-3 mb-1">Phone Number</label>
+                        <div class="form-control rounded-pill form-control-custom py-2 shadow-inner">
+                            {{ user.phone_number or 'Not provided' }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="fw-bold text-dark ms-3 mb-1">Email Address</label>
+                        <div class="form-control rounded-pill form-control-custom py-2 shadow-inner">
+                            {{ user.email }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2 mt-5 border-top pt-4 border-dark border-opacity-10">
+                <a href="{{ url_for('users.index') }}" class="btn btn-transparent-gray rounded-pill px-4 fw-semibold text-dark">
+                    Back to list
+                </a>
+                <a href="{{ url_for('users.delete_confirm', user_id=user.id) }}" class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm">
+                    Delete
+                </a>
+                <a href="{{ url_for('users.edit', user_id=user.id) }}" class="btn bg-custom-blue text-white rounded-pill px-5 fw-bold btn-glow">
+                    Edit Profile
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+<div class="container d-flex justify-content-center">
+    <div class="card border-0 shadow-lg rounded-4 overflow-hidden" style="max-width: 700px; width: 100%; background-color: #cecece;">
+        
+        <div class="bg-custom-blue py-3 text-center header-glow mb-4">
+            <h4 class="text-white fw-bold mb-0 card-header-title">Symptoms Detail</h4>
+        </div>
+
+        <div class="card-body px-5 pb-5">
+            <form method="POST">
+                {{ form.hidden_tag() }}
+
+                <div class="mb-3">
+                    {{ form.symptom.label(class="form-label-sm") }}
+                    {{ form.symptom(class="form-control rounded-pill form-control-custom", placeholder="e.g. Redness") }}
+                    {% for error in form.symptom.errors %}
+                        <div class="text-danger small ms-3">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.description.label(class="form-label-sm") }}
+                    {{ form.description(class="form-control rounded-4 form-control-custom", rows="3", placeholder="Describe the symptom in detail") }}
+                    {% for error in form.description.errors %}
+                        <div class="text-danger small ms-3">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="d-flex justify-content-end align-items-center gap-2 mt-4 pt-3 border-top border-dark border-opacity-10">
+                    <a href="{{ url_for('facts.index') }}" class="btn btn-transparent-gray rounded-pill px-4 fw-semibold text-dark">
+                        Cancel
+                    </a>
+                    {{ form.submit(class="btn bg-custom-blue text-white rounded-pill px-5 fw-bold btn-glow") }}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

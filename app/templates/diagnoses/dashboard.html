@@ -1,0 +1,52 @@
+ {% extends "layouts/base.html" %} {% block title %}Related Functions{% endblock %} {% block content %}
+<div class="container d-flex justify-content-center">
+    <div class="card border-0 shadow-lg rounded-4 overflow-hidden" style="max-width: 950px; width: 100%; background-color: #cecece;">
+
+        <div class="bg-custom-blue py-3 text-center header-glow mb-4">
+            <h4 class="fw-bold text-white mb-0">Diseases</h4>
+        </div>
+
+        <div class="card-body px-4 px-md-5 pb-5">
+            <h6 class="fw-bold text-dark text-decoration-underline mb-4">Type of Disease</h6>
+
+            {% if rules %}
+            <div class="d-flex flex-column gap-4">
+                {% for rule in rules %}
+                <div class="row align-items-center g-0">
+                    <div class="col-4 col-md-3">
+                        <div class="pe-3">
+                            {% if rule.picture %}
+                            <img src="{{ url_for('static', filename='diseasePic/' ~ rule.picture) }}" class="img-fluid rounded-4 shadow-sm border border-secondary border-opacity-25" style="aspect-ratio: 4/3; object-fit: cover; width: 100%;"> {% else %}
+                            <img src="{{ url_for('static', filename='images/disease.jpg') }}" class="img-fluid rounded-4 shadow-sm border border-secondary border-opacity-25" style="aspect-ratio: 4/3; object-fit: cover; width: 100%;"> {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="col-8 col-md-9">
+                        <div class="form-control rounded-4 form-control-custom p-3 shadow-sm h-100" style="background-color: rgba(255,255,255,0.5) !important; border: 1px solid rgba(255,255,255,0.4) !important;">
+
+                            <p class="fw-bold text-dark mb-2">
+                                {{ rule.name }}: {{ rule.description if rule.description else "these symptoms will appeared when ever you got the " ~ rule.name }}
+                            </p>
+
+                            <ul class="list-unstyled mb-0 ps-2" style="font-size: 0.9rem;">
+                                {% if rule.advice %} {# Split advice by new lines if it's a long string, or loop if it's a list #} {% set advice_items = rule.advice.split('\n') if rule.advice is string else rule.advice %} {% for item in advice_items %} {% if item.strip() %}
+                                <li class="text-dark">• {{ item.strip() }}</li>
+                                {% endif %} {% endfor %} {% else %}
+                                <li class="text-muted italic">• No symptoms or advice listed.</li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <p class="text-muted">No diseases defined yet.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

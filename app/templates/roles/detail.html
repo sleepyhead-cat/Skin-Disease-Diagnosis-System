@@ -1,0 +1,37 @@
+{% extends "layouts/base.html" %}
+{% block title %}Role Detail{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-custom-blue text-white">
+                <h1 class="h4 mb-0">Role Detail: {{ role.name }}</h1>
+            </div>
+            <div class="card-body">
+                <p><strong>Role Name:</strong> {{ role.name }}</p>
+                <p><strong>Description:</strong> {{ role.description or 'None' }}</p>
+                
+                <h5 class="mt-4 mb-3">Assigned Permissions ({{ role.permissions|length }})</h5>
+                {% if role.permissions %}
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for perm in role.permissions %}
+                            <span class="badge rounded-pill bg-secondary px-3 py-2">
+                                <small class="text-light opacity-75">[{{ perm.module }}]</small> {{ perm.name }}
+                            </span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-muted">No permissions assigned to this role.</p>
+                {% endif %}
+
+                <div class="mt-4 d-flex gap-2">
+                    <a href="{{ url_for('roles.index') }}" class="btn btn-secondary">Back to List</a>
+                    <a href="{{ url_for('roles.edit', role_id=role.id) }}" class="btn btn-warning">Edit Role</a>
+                    <a href="{{ url_for('roles.delete_confirm', role_id=role.id) }}" class="btn btn-danger">Delete Role</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

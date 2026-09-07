@@ -1,0 +1,277 @@
+body {
+    background-color: #f5f5f5;
+}
+
+main.container {
+    max-width: 960px;
+}
+
+.table td,
+.table th {
+    vertical-align: middle;
+}
+
+.list-group-item.form-control-custom {
+    background-color: rgba(255, 255, 255, 0.7) !important;
+    border: none !important;
+    margin-bottom: 8px;
+    transition: transform 0.2s ease;
+}
+
+.list-group-item.form-control-custom:hover {
+    transform: scale(1.01);
+    background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+
+/* Custom Large Checkbox */
+
+.checkbox-lg .form-check-input {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-top: 0;
+    /* Aligns box with text center */
+    cursor: pointer;
+}
+
+.checkbox-lg .form-check-label {
+    font-size: 1.1rem !important;
+    /* Makes label text bigger */
+    padding-left: 10px;
+    cursor: pointer;
+    line-height: 1.5rem;
+    /* Matches the height of the checkbox */
+}
+
+
+/* Optional: Blue glow when checked to match your theme */
+
+.checkbox-lg .form-check-input:checked {
+    background-color: #00c3ff;
+    border-color: #00c3ff;
+    box-shadow: 0 0 8px rgba(0, 195, 255, 0.5);
+}
+
+
+/* Optimized Label Styling */
+
+.form-label-sm {
+    font-size: 1.2rem !important;
+    /* Smaller, standard dashboard size */
+    font-weight: 800;
+    color: #333;
+    margin-bottom: 4px;
+    margin-left: 15px;
+    /* Aligns with the pill-shaped input padding */
+    display: block;
+}
+
+
+/* Ensure headings in cards aren't oversized */
+
+.card-header-title {
+    font-size: 1.75rem !important;
+    /* Reduces the "big" feel of h2/h1 */
+    letter-spacing: 1px;
+}
+
+
+/* Internal shadow for the pill fields to give them depth */
+
+.shadow-inner {
+    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.form-control-custom {
+    background-color: rgba(255, 255, 255, 0.6) !important;
+    border: none !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.form-control-custom:focus {
+    background-color: #fff !important;
+    box-shadow: 0 0 10px rgba(0, 195, 255, 0.3) !important;
+}
+
+
+/* Ensure the circular photo is perfectly centered */
+
+.photo-placeholder {
+    width: 150px;
+    height: 150px;
+    background-color: white;
+    /* Changed from 50% to 15px for a rounded square look */
+    border-radius: 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    /* Matches the border style in your uploaded disease images */
+    border: 2px solid #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.preview-img {
+    width: 100%;
+    height: 100%;
+    /* 'cover' provides that zoomed-in, fill-to-edges effect */
+    object-fit: cover;
+}
+
+
+/* Custom Blue to match your Login header */
+
+.bg-custom-blue {
+    background-color: #00c3ff !important;
+}
+
+
+/* Sidebar sizing and light gray background */
+
+.sidebar {
+    width: 260px;
+    min-width: 260px;
+    background-color: #f8f9fa;
+}
+
+
+/* The header glow effect from your images */
+
+.header-glow {
+    box-shadow: 0px 8px 20px rgba(0, 195, 255, 0.4);
+    position: relative;
+    z-index: 10;
+}
+
+
+/* Sidebar Links: Blue Pills */
+
+.sidebar-link {
+    display: block;
+    width: 100%;
+    padding: 8px 20px;
+    background-color: #00c3ff;
+    color: white !important;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 10px;
+    transition: all 0.2s ease-in-out;
+    border: none;
+    text-align: left;
+}
+
+
+/* Active and Hover: Add the glow seen in your images */
+
+.sidebar-link:hover,
+.sidebar-link.active {
+    box-shadow: 0px 4px 15px rgba(0, 195, 255, 0.7);
+    transform: scale(1.02);
+    filter: brightness(1.1);
+}
+
+
+/* Avatar circle */
+
+.user-avatar-small {
+    width: 45px;
+    height: 45px;
+    background: white;
+    border-radius: 50%;
+    padding: 2px;
+}
+
+
+/* Login Form */
+
+.bg-custom-gray {
+    background-color: #cecece;
+}
+
+
+/* Deep blue glow for the header */
+
+.header-glow {
+    box-shadow: 0px 8px 20px rgba(0, 195, 255, 0.5);
+    z-index: 1;
+    position: relative;
+}
+
+
+/* Subtle glow for the button */
+
+.btn-glow {
+    box-shadow: 0px 5px 12px rgba(0, 195, 255, 0.6);
+}
+
+
+/* Custom input styling */
+
+.form-control-custom {
+    background-color: rgba(163, 163, 163, 0.3);
+    border: none;
+    color: #333;
+    padding: 0.8rem 1.5rem;
+    /* Increased inner padding */
+}
+
+.form-control-custom::placeholder {
+    color: #7a7a7a;
+}
+
+.btn-transparent-gray {
+    background-color: rgba(163, 163, 163, 0.3);
+    color: white;
+    border: none;
+}
+
+
+/* Register Form */
+
+
+/* Shared Styles from Login */
+
+.bg-custom-blue {
+    background-color: #00c3ff;
+}
+
+.header-glow {
+    box-shadow: 0px 8px 25px rgba(0, 195, 255, 0.5);
+    z-index: 1;
+    position: relative;
+}
+
+.btn-glow {
+    box-shadow: 0px 5px 15px rgba(0, 195, 255, 0.6);
+}
+
+.form-control-custom {
+    background-color: rgba(163, 163, 163, 0.3);
+    border: none;
+    color: #333;
+    padding: 0.8rem 1.5rem;
+}
+
+.form-control-custom::placeholder {
+    color: #7a7a7a;
+}
+
+.btn-transparent-gray {
+    background-color: rgba(163, 163, 163, 0.3);
+    color: white;
+    border: none;
+}
+
+
+/* Profile Photo Styles */
+
+.photo-placeholder {
+    width: 150px;
+    height: 150px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+}

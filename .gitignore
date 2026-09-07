@@ -1,0 +1,8 @@
+venvAssPj\
+./venvAssPj
+venv\
+./venv
+__pycache__/
+*.pyc
+.env
+instance/

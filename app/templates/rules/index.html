@@ -1,0 +1,74 @@
+{% extends "layouts/base.html" %}
+{% block title %}Disease{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Diseases</h1>
+    <a href="{{ url_for('rules.create') }}" class="btn btn-info text-white fw-bold fs-5">Add Disease</a>
+</div>
+
+{% if rules %}
+<table class="table table-striped align-middle">
+    <thead>
+        <tr>
+            <th>Disease</th>
+            <th>Picture</th>
+            <th>Name</th>
+            <th>Urgency</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Actions</th>
+            <th class="text-end"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for rule in rules %}
+        <tr>
+            <td>
+                <a href="{{ url_for('rules.detail', rule_id=rule.id) }}" class="text-decoration-none fw-semibold">
+                    {{ rule.disease }}
+                </a>
+            </td>
+            <td>
+                {% if rule.picture %}
+                    <img src="{{ url_for('static', filename='diseasePic/' ~ rule.picture) }}"
+                         alt="Disease Picture"
+                         class="rounded-circle"
+                         style="width:40px; height:40px;">
+                {% else %}
+                    <img src="{{ url_for('static', filename='images/disease.jpg') }}"
+                         alt="Disease Picture"
+                         class="rounded-circle"
+                         style="width:40px; height:40px;">
+                {% endif %}
+            </td>
+            <td>{{ rule.name }}</td>
+            <td>
+                {% if rule.urgency %}
+                    <span class="badge bg-danger">Urgent</span>
+                {% else %}
+                    <span class="badge bg-warning">Not Urgent</span>
+                {% endif %}
+            </td>
+            <td>{{ rule.description }}</td>
+            <td>
+                {% if rule.is_active %}
+                    <span class="badge bg-success">Active</span>
+                {% else %}
+                    <span class="badge bg-secondary">Inactive</span>
+                {% endif %}
+            </td>
+            <td>{{ rule.created_at.strftime('%Y-%m-%d') }}</td>
+            <td class="text-end">
+                <a href="{{ url_for('rules.edit', rule_id=rule.id) }}" class="btn btn-sm btn-outline-warning" title="Edit">✏️</a>
+                <a href="{{ url_for('rules.delete_confirm', rule_id=rule.id) }}" class="btn btn-sm btn-outline-danger" title="Delete">🗑️</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <p class="text-muted">No rules defined yet.</p>
+{% endif %}
+{% endblock %}

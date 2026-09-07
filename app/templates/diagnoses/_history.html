@@ -1,0 +1,52 @@
+{% extends "layouts/base.html" %}
+{% block title %}Diagnosis History{% endblock %}
+
+{% block content %}
+<h2>Your Diagnosis History</h2>
+
+{% if diagnoses %}
+<table class="table table-striped align-middle shadow-sm">
+    <thead class="table-light">
+        <tr>
+            <th>ID</th>
+            <th>Disease</th>
+            <th>Certainty</th>
+            <th>Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for d in diagnoses %}
+        <tr>
+            <td>{{ d.id }}</td>
+            <td>
+                {% if d.rules %}
+                    {% for r in d.rules %}
+                        {{ r.name }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                {% else %}
+                    Unknown
+                {% endif %}
+            </td>
+            <td>
+                {% if d.certainty %}
+                    <span class="badge bg-info text-dark">
+                        {{ d.certainty|round(0) }}%
+                    </span>
+                {% else %}
+                    <span class="text-muted">N/A</span>
+                {% endif %}
+            </td>
+            <td>{{ d.diagnosed_at.strftime("%Y-%m-%d %H:%M") if d.diagnosed_at else "N/A" }}</td>
+            <td>
+                <a href="{{ url_for('diagnoses.diagnose_result', diagnose_id=d.id) }}" 
+                   class="btn btn-sm btn-info">View</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <p class="text-muted">You have no past diagnoses.</p>
+{% endif %}
+{% endblock %}

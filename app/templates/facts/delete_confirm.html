@@ -1,0 +1,32 @@
+{% extends "layouts/base.html" %}
+{% block title %}Delete Symptom{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h1 class="h3 mb-3">Delete Symptom<h1>
+            </div>
+            <div class="card-body">
+                <p>
+                    Are you sure you want to delete symptom
+                    <strong>"{{ fact.symptom }}"</strong>?
+                </p>
+
+                <form action="{{ url_for('facts.delete', fact_id=fact.id) }}" method="POST">
+                    {{ form.hidden_tag() }}
+
+                    <button type="submit" class="btn btn-danger">
+                        Delete
+                    </button>
+                    <a href="{{ url_for('facts.detail', fact_id=fact.id) }}"
+                        class="btn btn-secondary">
+                        Cancel
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock  %}

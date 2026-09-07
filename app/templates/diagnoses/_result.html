@@ -1,0 +1,118 @@
+{% extends "layouts/base.html" %}
+{% block title %}Diagnosis Result{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center my-4">
+    <div class="card border-0 shadow-lg rounded-4 overflow-hidden" style="max-width: 900px; width: 100%; background-color: #f8f9fa;">
+        
+        <!-- Header -->
+        <div class="bg-custom-blue py-4 text-center header-glow">
+            <h3 class="text-white fw-bold mb-1">Diagnostic Assessment Summary</h3>
+            <small class="text-white text-opacity-75">Generated on {{ diagnose.diagnosed_at.strftime('%B %d, %Y at %H:%M') }}</small>
+        </div>
+
+        <div class="card-body p-5">
+            {% if diagnose.rules %}
+                {% set top_rule = diagnose.rules[0] %}
+                
+                <!-- Primary Result Banner -->
+                <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden">
+                    <div class="p-4 bg-white d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+                        <div>
+                            <span class="badge bg-secondary text-uppercase px-3 py-2 rounded-pill mb-2">Primary Diagnosis</span>
+                            <h2 class="fw-bold text-dark mb-1">{{ top_rule.disease }}</h2>
+                            {% if top_rule.name %}
+                                <p class="text-muted mb-0">{{ top_rule.name }}</p>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Certainty Factor Badge -->
+                        <div class="text-center bg-light rounded-4 p-3 border" style="min-width: 160px;">
+                            <div class="text-muted small fw-bold text-uppercase">Certainty Score</div>
+                            <div class="display-6 fw-bold {% if diagnose.certainty >= 80 %}text-success{% elif diagnose.certainty >= 50 %}text-warning{% else %}text-danger{% endif %}">
+                                {{ diagnose.certainty }}%
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if top_rule.urgency %}
+                        <div class="bg-danger text-white p-3 d-flex align-items-center gap-2">
+                            <i class="bi bi-exclamation-triangle-fill fs-5"></i>
+                            <span class="fw-bold">Urgent Medical Attention Advised:</span> Please consult a healthcare professional immediately.
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Advice & Description -->
+                <div class="row g-4 mb-4">
+                    {% if top_rule.description %}
+                        <div class="col-md-6">
+                            <div class="card h-100 border-0 shadow-sm rounded-4 p-4 bg-white">
+                                <h5 class="fw-bold text-dark mb-3">Condition Description</h5>
+                                <p class="text-secondary mb-0">{{ top_rule.description }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    {% if top_rule.advice %}
+                        <div class="col-md-6">
+                            <div class="card h-100 border-0 shadow-sm rounded-4 p-4 bg-white">
+                                <h5 class="fw-bold text-dark mb-3">Recommended Next Steps</h5>
+                                <p class="text-secondary mb-0">{{ top_rule.advice }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Rule Reasoning / Evaluated Symptoms -->
+                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+                    <h5 class="fw-bold text-dark mb-3">Evaluated Symptoms & Severity</h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Symptom</th>
+                                    <th>Observed Severity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for df in diagnose.diagnose_facts %}
+                                    <tr>
+                                        <td class="fw-semibold text-dark">{{ df.fact.symptom }}</td>
+                                        <td>
+                                            {% if df.severity >= 0.8 %}
+                                                <span class="badge bg-danger">Severe</span>
+                                            {% elif df.severity >= 0.5 %}
+                                                <span class="badge bg-warning text-dark">Moderate</span>
+                                            {% else %}
+                                                <span class="badge bg-info text-dark">Mild</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            {% else %}
+                <div class="alert alert-warning text-center rounded-4 p-4">
+                    <h5>No Specific Condition Identified</h5>
+                    <p class="mb-0">The reported symptoms did not trigger a specific rule threshold. Please re-evaluate or consult a doctor.</p>
+                </div>
+            {% endif %}
+
+            <!-- Action Buttons -->
+            <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                <a href="{{ url_for('diagnoses.diagnose') }}" class="btn btn-outline-secondary rounded-pill px-4 fw-semibold">
+                    ← New Assessment
+                </a>
+                <button onclick="window.print()" class="btn bg-custom-blue text-white rounded-pill px-4 fw-bold">
+                    Print Report
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

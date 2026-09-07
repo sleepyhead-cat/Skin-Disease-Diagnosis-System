@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Skin Disease Diagnosis{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <div class="d-flex min-vh-100">
+        
+        <aside class="sidebar d-none d-md-flex flex-column bg-light shadow">
+            <div class="sidebar-user-header p-4 d-flex align-items-center mb-4">
+                <div class="user-avatar-small me-2">
+                    <img src="{% if current_user.is_authenticated and current_user.picture %}
+                            {{ url_for('static', filename='uploads/' ~ current_user.picture) }}
+                        {% else %}{{ url_for('static', filename='images/8358770.png') }}
+                        {% endif %}"
+                    class="rounded-circle w-100 h-100 shadow-sm"
+                    style="object-fit: cover;">
+                </div>
+                <span class="text-black fw-bold fs-5">{{ current_user.username if current_user.is_authenticated else "User" }}</span>
+            </div>
+            
+            {% if current_user.is_authenticated %}
+                
+                {# Safely extract all role names into a single list string #}
+                {% if current_user.roles %}
+                    {% set role_list = current_user.roles | map(attribute='name') | map('lower') | list %}
+                {% elif current_user.role %}
+                    {% set role_list = [current_user.role.name | lower] if current_user.role.name is defined else [current_user.role | lower] %}
+                {% else %}
+                    {% set role_list = [] %}
+                {% endif %}
+
+                {% set is_admin_user = (current_user.is_admin is defined and current_user.is_admin) or ('admin' in role_list) %}
+                {% set is_dermatologist_user = 'dermatologist' in role_list %}
+
+                <!-- 1. USER MANAGEMENT: Admin Only -->
+                {% if is_admin_user %}
+                    <div class="px-3 mb-4">
+                        <h5 class="fw-bold text-dark border-bottom border-dark pb-1 mb-3">User Management</h5>
+                        <nav class="nav flex-column gap-2">
+                            <a href="{{ url_for('users.index') }}" class="sidebar-link {% if request.blueprint == 'users' %}active{% endif %}">Users</a>
+                            <a href="{{ url_for('roles.index') }}" class="sidebar-link {% if request.blueprint == 'roles' %}active{% endif %}">Roles</a>
+                            <a href="{{ url_for('permissions.index') }}" class="sidebar-link {% if request.blueprint == 'permissions' %}active{% endif %}">Permissions</a>
+                        </nav>
+                    </div>
+                {% endif %}
+
+                <!-- 2. DISEASE MANAGEMENT: Dermatologist & Admin -->
+                {% if is_admin_user or is_dermatologist_user %}
+                    <div class="px-3 mb-4">
+                        <h5 class="fw-bold text-dark border-bottom border-dark pb-1 mb-3">Disease Management</h5>
+                        <nav class="nav flex-column gap-2">
+                            <a href="{{ url_for('rules.index') }}" class="sidebar-link {% if request.blueprint == 'rules' %}active{% endif %}">Diseases</a>
+                            <a href="{{ url_for('facts.index') }}" class="sidebar-link {% if request.blueprint == 'facts' %}active{% endif %}">Symptoms</a>
+                        </nav>
+                    </div>
+                {% endif %}
+
+                <!-- 3. FEATURES: All Logged-in Users -->
+                <div class="px-3 mb-4">
+                    <h5 class="fw-bold text-dark border-bottom border-dark pb-1 mb-3">Features</h5>
+                    <nav class="nav flex-column gap-2">
+                        <a href="{{ url_for('diagnoses.dashboard') }}" class="sidebar-link {% if request.endpoint == 'diagnoses.dashboard' %}active{% endif %}">Diseases Library</a>
+                        <a href="{{ url_for('diagnoses.diagnose') }}" class="sidebar-link {% if request.endpoint == 'diagnoses.diagnose' %}active{% endif %}">Start Diagnosis</a>
+                        <a href="{{ url_for('diagnoses.diagnose_history') }}" class="sidebar-link {% if request.endpoint == 'diagnoses.diagnose_history' %}active{% endif %}">History</a>
+                    </nav>
+                </div>
+
+            {% endif %}
+        </aside>
+
+        <div class="flex-grow-1 bg-custom-gray-light">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-custom-blue header-glow p-3">
+                <div class="container-fluid px-4">
+                    <a class="navbar-brand fw-bold fs-2" href="#">Skin Disease Diagnosis</a>
+                    
+                    <div class="ms-auto">
+                        {% if current_user.is_authenticated %}
+                            <a href="{{ url_for('auth.logout') }}" class="text-white fw-bold text-decoration-none fs-5">Logout</a>
+                        {% else %}
+                            <a href="{{ url_for('auth.login') }}" class="text-white fw-bold text-decoration-none fs-5">Login</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </nav>
+
+            <main class="p-5">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm rounded-pill px-4" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                {% block content %}{% endblock %}
+            </main>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

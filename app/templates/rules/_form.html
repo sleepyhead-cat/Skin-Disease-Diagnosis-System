@@ -1,0 +1,126 @@
+<div class="container d-flex justify-content-center">
+    <div class="card border-0 shadow-lg rounded-4 overflow-hidden" style="max-width: 850px; width: 100%; background-color: #cecece;">
+        
+        <div class="bg-custom-blue py-3 text-center header-glow mb-4">
+            <h4 class="text-white fw-bold mb-0 card-header-title">Disease Information Detail</h4>
+            <small class="text-white text-opacity-75">Management & Diagnosis</small>
+        </div>
+
+        <div class="card-body px-5 pb-5">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ form.disease.label(class="form-label-sm") }}
+                        {{ form.disease(class="form-control rounded-pill form-control-custom", placeholder="Disease Code...") }}
+                        {% for error in form.disease.errors %}<div class="text-danger small ms-3">{{ error }}</div>{% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.name.label(class="form-label-sm") }}
+                        {{ form.name(class="form-control rounded-pill form-control-custom", placeholder="Disease Name...") }}
+                        {% for error in form.name.errors %}<div class="text-danger small ms-3">{{ error }}</div>{% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.advice.label(class="form-label-sm") }}
+                        {{ form.advice(class="form-control rounded-pill form-control-custom", placeholder="Medical advice...") }}
+                        {% for error in form.advice.errors %}<div class="text-danger small ms-3">{{ error }}</div>{% endfor %}
+                    </div>
+
+                    <div class="col-6 d-flex align-items-center pt-2">
+                        <div class="form-check custom-checkbox-pill">
+                            {{ form.urgency(class="form-check-input") }}
+                            {{ form.urgency.label(class="form-check-label fw-bold small text-dark") }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ form.description.label(class="form-label-sm") }}
+                        {{ form.description(class="form-control rounded-4 form-control-custom", rows="4", placeholder="Detailed description...") }}
+                        {% for error in form.description.errors %}<div class="text-danger small ms-3">{{ error }}</div>{% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.picture.label(class="form-label-sm") }}
+                        
+                        <div class="mb-2">
+                            <div class="photo-placeholder rounded-3 shadow-sm" 
+                                style="width: 120px; height: 120px; border: 2px solid white; overflow: hidden; background: rgba(255,255,255,0.2);">
+                                
+                                <img id="image-preview" 
+                                    src="{% if form.picture.data %}{{ url_for('static', filename='diseasePic/' ~ form.picture.data) }}{% else %}{{ url_for('static', filename='images/disease.png') }}{% endif %}" 
+                                    alt="Preview" 
+                                    class="w-100 h-100" 
+                                    style="object-fit: cover;">
+                            </div>
+                        </div>
+
+                        {{ form.picture(class="form-control rounded-pill form-control-custom py-1", id="picture-input") }}
+                        {% for error in form.picture.errors %}<div class="text-danger small ms-3">{{ error }}</div>{% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-4 border-dark border-opacity-10">
+
+            <!-- UPDATED SYMPTOMS & MB WEIGHTS SECTION -->
+            <div class="mb-4">
+                <label class="form-label-sm mb-1 fw-bold">Associated Symptoms & Weight Factors (MB)</label>
+                <small class="d-block text-muted mb-3">Check the symptom and specify its certainty weight (MB score from 0.10 to 1.00)</small>
+                
+                <div class="form-control rounded-4 form-control-custom p-3 shadow-inner" style="max-height: 280px; overflow-y: auto;">
+                    <table class="table table-borderless table-sm align-middle mb-0">
+                        <thead>
+                            <tr class="border-bottom text-muted small">
+                                <th style="width: 12%;">Select</th>
+                                <th>Symptom</th>
+                                <th style="width: 35%;">Weight Factor (MB)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for value, label in form.fact_ids.choices %}
+                            <tr>
+                                <td>
+                                    <div class="form-check custom-checkbox-pill">
+                                        <input class="form-check-input" type="checkbox" name="{{ form.fact_ids.name }}" 
+                                               value="{{ value }}" id="fact_{{ value }}"
+                                               {% if form.fact_ids.data and value in form.fact_ids.data %}checked{% endif %}>
+                                    </div>
+                                </td>
+                                <td>
+                                    <label class="form-check-label small text-dark fw-medium" for="fact_{{ value }}">
+                                        {{ label }}
+                                    </label>
+                                </td>
+                                <td>
+                                    <input type="number" step="0.05" min="0.10" max="1.00" 
+                                           name="weight_{{ value }}" 
+                                           value="{{ existing_weights.get(value, 0.70) if existing_weights else 0.70 }}" 
+                                           class="form-control form-control-sm rounded-pill px-3" 
+                                           placeholder="e.g. 0.75">
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center pt-3 border-top border-dark border-opacity-10">
+                <div class="form-check custom-checkbox-pill">
+                    {{ form.is_active(class="form-check-input") }}
+                    {{ form.is_active.label(class="form-check-label fw-bold small text-dark") }}
+                </div>
+
+                <div class="d-flex gap-2">
+                    <a href="{{ url_for('rules.index') }}" class="btn btn-transparent-gray rounded-pill px-4 fw-semibold text-dark">
+                        Cancel
+                    </a>
+                    {{ form.submit(class="btn bg-custom-blue text-white rounded-pill px-5 fw-bold btn-glow") }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

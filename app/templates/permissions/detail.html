@@ -1,0 +1,26 @@
+{% extends "layouts/base.html" %}
+{% block title %}Permission Detail{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-custom-blue text-white">
+                <h1 class="h4 mb-0">Permission Detail: {{ permission.code }}</h1>
+            </div>
+            <div class="card-body">
+                <p><strong>Code:</strong> {{ permission.code }}</p>
+                <p><strong>Name:</strong> {{ permission.name }}</p>
+                <p><strong>Module:</strong> <span class="badge bg-secondary">{{ permission.module }}</span></p>
+                <p><strong>Description:</strong> {{ permission.description or 'None' }}</p>
+                
+                <div class="mt-4 d-flex gap-2">
+                    <a href="{{ url_for('permissions.index') }}" class="btn btn-secondary">Back to List</a>
+                    <a href="{{ url_for('permissions.edit', permission_id=permission.id) }}" class="btn btn-warning">Edit</a>
+                    <a href="{{ url_for('permissions.delete_confirm', permission_id=permission.id) }}" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

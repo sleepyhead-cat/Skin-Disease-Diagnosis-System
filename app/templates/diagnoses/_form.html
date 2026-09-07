@@ -1,0 +1,69 @@
+{% extends "layouts/base.html" %}
+{% block title %}Start Diagnosis{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center">
+    <div class="card border-0 shadow-lg rounded-4 overflow-hidden" style="max-width: 900px; width: 100%; background-color: #cecece;">
+        
+        <div class="bg-custom-blue py-3 text-center header-glow mb-4">
+            <h4 class="text-white fw-bold mb-0 card-header-title">Symptom & Severity Assessment</h4>
+            <small class="text-white text-opacity-75">Select the severity level for each symptom you are experiencing</small>
+        </div>
+
+        <div class="card-body px-5 pb-5">
+            <form method="post">
+                {{ form.hidden_tag() }}
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold text-dark mb-3">Observed Symptoms</label>
+                    
+                    <div class="form-control rounded-4 form-control-custom p-4 shadow-inner" style="max-height: 420px; overflow-y: auto; background-color: #f8f9fa;">
+                        <div class="row g-3">
+                            {% for fact in facts %}
+                                <div class="col-md-6">
+                                    <div class="card h-100 border-0 shadow-sm rounded-3 p-3 bg-white">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <h6 class="fw-bold text-dark mb-0">{{ fact.symptom }}</h6>
+                                        </div>
+                                        
+                                        {% if fact.description %}
+                                            <p class="text-muted small mb-2" style="font-size: 0.825rem;">{{ fact.description }}</p>
+                                        {% endif %}
+
+                                        <div class="mt-auto">
+                                            <label for="severity_{{ fact.id }}" class="form-label form-label-sm text-secondary small fw-semibold mb-1">
+                                                Severity Level:
+                                            </label>
+                                            <select class="form-select form-select-sm rounded-pill border-secondary border-opacity-25" 
+                                                    name="severity_{{ fact.id }}" 
+                                                    id="severity_{{ fact.id }}">
+                                                <option value="0.0" selected>Absent (Not Present)</option>
+                                                <option value="0.3">Mild (Slight / Barely Noticeable)</option>
+                                                <option value="0.6">Moderate (Bothersome / Clear)</option>
+                                                <option value="0.9">Severe (Intense / Widespread)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    {% for error in form.errors %}
+                        <div class="text-danger small ms-3 mt-2">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="d-flex justify-content-end align-items-center gap-2 mt-4 pt-4 border-top border-dark border-opacity-10">
+                    <a href="{{ url_for('diagnoses.dashboard') }}" class="btn btn-transparent-gray rounded-pill px-4 fw-semibold text-dark">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn bg-custom-blue text-white rounded-pill px-5 fw-bold btn-glow">
+                        Diagnosing
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

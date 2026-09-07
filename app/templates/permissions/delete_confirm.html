@@ -1,0 +1,22 @@
+{% extends "layouts/base.html" %}
+{% block title %}Delete Permission{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h1 class="h5 mb-0">Confirm Delete</h1>
+            </div>
+            <div class="card-body">
+                <p>Are you sure you want to delete permission <strong>{{ permission.code }}</strong>?</p>
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <a href="{{ url_for('permissions.detail', permission_id=permission.id) }}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
