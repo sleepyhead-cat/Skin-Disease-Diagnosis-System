@@ -54,7 +54,7 @@ def create_app(config_class: type[Config] = Config):
         if current_user.is_authenticated:
             if getattr(current_user, 'is_admin', False) or current_user.has_permission("user.view"):
                 return redirect(url_for("users.index"))
-            return redirect(url_for("diagnose.start"))
+            return redirect(url_for("diagnoses.dashboard"))
         return redirect(url_for("auth.login"))
 
     # --- AUTO-CREATE TABLES & SEED DATABASE ---
