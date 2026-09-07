@@ -2,7 +2,6 @@ from flask import Flask, redirect, url_for
 from flask_login import current_user
 from config import Config
 from extensions import db, csrf, login_manager, migrate
-from app.models.user import User
 
 def create_app(config_class: type[Config] = Config):
     app = Flask(__name__)
@@ -18,6 +17,11 @@ def create_app(config_class: type[Config] = Config):
     login_manager.login_view = "auth.login" 
     login_manager.login_message = "Please log in to access this page."
     login_manager.login_message_category = "warning"
+    
+    # Import models so SQLAlchemy registers them before creating tables
+    from app.models.user import User
+    # Import any other model files here so their tables get created as well
+    # e.g., from app.models.role import Role
     
     @login_manager.user_loader
     def load_user(user_id: str):
@@ -48,5 +52,9 @@ def create_app(config_class: type[Config] = Config):
                 return redirect(url_for("users.index"))
             return redirect(url_for("diagnose.start"))
         return redirect(url_for("auth.login"))
+
+    # Auto-create all SQLite tables on app startup
+    with app.app_context():
+        db.create_all()
     
     return app
